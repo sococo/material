@@ -1,3 +1,12 @@
+<a name"0.10.2-rc1"></a>
+### 0.10.2-rc1 (2015-08-21)
+
+
+#### Bug Fixes
+
+* **mdMenu:** issue where backdrop would never dismiss ([dea5a3f2](https://github.com/angular/material/commit/dea5a3f2))
+
+
 <a name"0.10.1"></a>
 ### 0.10.1 (2015-08-11)
 

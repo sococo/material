@@ -12,7 +12,7 @@
   var pushCmds       = [ 'rm abort push'];
   var cleanupCmds    = [];
   var defaultOptions = { encoding: 'utf-8' };
-  var origin         = 'https://github.com/angular/material.git';
+  var origin         = 'https://github.com/sococo/material.git';
   var lineWidth      = 80;
   var lastMajorVer   = JSON.parse(exec('curl https://material.angularjs.org/docs.json')).latest;
   var newVersion;
@@ -26,7 +26,7 @@
     write('What would you like the old version to be? (default: {{oldVersion.cyan}}) ');
     oldVersion = prompt() || oldVersion;
     build();
-  } else if (validate()) {
+  } else {
     build();
   }
 
@@ -42,8 +42,8 @@
     tagRelease();
     cloneRepo('bower-material');
     updateBowerVersion();
-    cloneRepo('code.material.angularjs.org');
-    updateSite();
+    //cloneRepo('code.material.angularjs.org');
+    //updateSite();
     updateMaster();
     writeScript('abort', abortCmds.concat(cleanupCmds));
     if (!dryRun) writeScript('push', pushCmds.concat(cleanupCmds));
@@ -183,7 +183,7 @@
   function cloneRepo (repo) {
     start('Cloning ' + repo.cyan + ' from Github...');
     exec('rm -rf ' + repo);
-    exec('git clone https://github.com/angular/' + repo + '.git --depth=1');
+    exec('git clone https://github.com/sococo/' + repo + '.git --depth=1');
     done();
     cleanupCmds.push('rm -rf ' + repo);
   }
