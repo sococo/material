@@ -12,7 +12,7 @@
   var pushCmds       = [ 'rm abort push'];
   var cleanupCmds    = [];
   var defaultOptions = { encoding: 'utf-8' };
-  var origin         = 'https://github.com/angular/material.git';
+  var origin         = 'git@github.com:sococo/material.git';
   var lineWidth      = 80;
   var lastMajorVer   = JSON.parse(exec('curl https://material.angularjs.org/docs.json')).latest;
   var newVersion;
@@ -26,7 +26,7 @@
     write('What would you like the old version to be? (default: {{oldVersion.cyan}}) ');
     oldVersion = prompt() || oldVersion;
     build();
-  } else if (validate()) {
+  } else {
     build();
   }
 
@@ -42,8 +42,8 @@
     tagRelease();
     cloneRepo('bower-material');
     updateBowerVersion();
-    cloneRepo('code.material.angularjs.org');
-    updateSite();
+    //cloneRepo('code.material.angularjs.org');
+    //updateSite();
     updateMaster();
     writeScript('abort', abortCmds.concat(cleanupCmds));
     if (!dryRun) writeScript('push', pushCmds.concat(cleanupCmds));
@@ -183,7 +183,7 @@
   function cloneRepo (repo) {
     start('Cloning ' + repo.cyan + ' from Github...');
     exec('rm -rf ' + repo);
-    exec('git clone https://github.com/angular/' + repo + '.git --depth=1');
+    exec('git clone git@github.com:sococo/' + repo + '.git --depth=1');
     done();
     cleanupCmds.push('rm -rf ' + repo);
   }
@@ -240,44 +240,6 @@
         'git push',
         'git push --tags',
         ( newVersion.indexOf('rc') < 0 ? 'npm publish' : '# skipped npm publish due to RC version' ),
-        'cd ..'
-    );
-  }
-
-  function updateSite () {
-    start('Adding new version of the docs site...');
-    var options = { cwd: './code.material.angularjs.org' },
-        config  = require(options.cwd + '/docs.json');
-    config.versions = config.versions.filter(function (version) {
-      return version.indexOf('rc') < 0;
-    });
-    config.versions.unshift(newVersion);
-    //-- only set to default if not a release candidate
-    if (newVersion.indexOf('rc') < 0) config.latest = newVersion;
-    fs.writeFileSync(options.cwd + '/docs.json', JSON.stringify(config, null, 2));
-    //-- build files for bower
-    exec([
-      'rm -rf dist',
-      'gulp docs',
-      'sed -i \'\' \'s,http:\\/\\/localhost:8080\\/angular-material,https:\\/\\/gitcdn.xyz/repo/angular/bower-material/v{{newVersion}}/angular-material,g\' dist/docs/docs.js'
-    ]);
-
-    //-- copy files over to site repo
-    exec([
-      'rm -rf ./*-rc*',
-      'cp -Rf ../dist/docs {{newVersion}}',
-      ( newVersion.indexOf('rc') < 0 ? 'rm -rf latest && cp -Rf ../dist/docs latest' : '# skipped latest because this is a release candidate' ),
-      'git add -A',
-      'git commit -m "release: version {{newVersion}}"',
-      'rm -rf ../dist'
-    ], options);
-    done();
-    //-- add steps to push script
-    pushCmds.push(
-        comment('push the site'),
-        'cd ' + options.cwd,
-        'git pull --rebase',
-        'git push',
         'cd ..'
     );
   }
