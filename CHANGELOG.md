@@ -1,3 +1,12 @@
+<a name"0.10.2-rc1"></a>
+### 0.10.2-rc1 (2015-08-21)
+
+
+#### Bug Fixes
+
+* **mdMenu:** issue where backdrop would never dismiss ([dea5a3f2](https://github.com/angular/material/commit/dea5a3f2))
+
+
 <a name"0.10.1"></a>
 ### 0.10.1 (2015-08-11)
 
@@ -47,7 +56,7 @@ styles
 
 #### Bug Fixes
 
-* **sidenav:** corrected use of internal $toggleOpen() ([6f72befb](https://github.com/angular/material/commit/6f72befb))
+* ** sidenav:** corrected use of internal $toggleOpen() ([6f72befb](https://github.com/angular/material/commit/6f72befb))
 * **$mdConstant:** fix overlapping in media-queries ([61a0e539](https://github.com/angular/material/commit/61a0e539), closes [#3423](https://github.com/angular/material/issues/3423), [#3451](https://github.com/angular/material/issues/3451))
 * **autocomplete:**
   * hitting escape once again clears the search text ([99e8e2c2](https://github.com/angular/material/commit/99e8e2c2), closes [#3847](https://github.com/angular/material/issues/3847))
@@ -173,7 +182,7 @@ styles
 
 
 <a name"0.10.0"></a>
-### 0.10.0 (2015-06-15)
+## 0.10.0 (2015-06-15)
 
 
 #### Features
