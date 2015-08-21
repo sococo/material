@@ -205,7 +205,7 @@ function MenuController($mdMenu, $attrs, $element, $scope) {
 
   // Use the $mdMenu interim element service to close the menu contents
   this.close = function closeMenu(skipFocus) {
-    if ( !ctrl.isOpen ) return;
+    if (!ctrl.isOpen && document.querySelector('.md-menu-backdrop') === null) return;
 
     ctrl.isOpen = false;
     triggerElement.setAttribute('aria-expanded', 'false');
