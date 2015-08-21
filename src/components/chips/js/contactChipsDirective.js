@@ -67,7 +67,8 @@
               <img \
                   ng-src="{{item[$mdContactChipsCtrl.contactImage]}}"\
                   alt="{{item[$mdContactChipsCtrl.contactName]}}" />\
-              <span class="md-contact-name" md-highlight-text="$mdContactChipsCtrl.searchText">\
+              <span class="md-contact-name" md-highlight-text="$mdContactChipsCtrl.searchText"\
+                    md-highlight-flags="{{$mdContactChipsCtrl.highlightFlags}}">\
                 {{item[$mdContactChipsCtrl.contactName]}}\
               </span>\
               <span class="md-contact-email" >{{item[$mdContactChipsCtrl.contactEmail]}}</span>\
@@ -111,7 +112,8 @@
         contactImage: '@mdContactImage',
         contactEmail: '@mdContactEmail',
         contacts: '=ngModel',
-        requireMatch: '=?mdRequireMatch'
+        requireMatch: '=?mdRequireMatch',
+        highlightFlags: '@?mdHighlightFlags'
       }
     };
 
