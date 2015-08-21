@@ -28,7 +28,7 @@ angular.module('material.components.sticky', [
  *     If not provided, it will use the result of `element.clone()`.
  */
 
-function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
+function MdSticky($document, $mdConstant, $$rAF, $mdUtil) {
 
   var browserStickySupport = checkStickySupport();
 
@@ -95,7 +95,9 @@ function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
       };
       self.items.push(item);
 
-      contentEl.parent().prepend(item.clone);
+      $mdUtil.nextTick(function() {
+        contentEl.prepend(item.clone);
+      });
 
       debouncedRefreshElements();
 
@@ -169,22 +171,22 @@ function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
         setCurrentItem(null);
 
       // Going to next item?
-      } else if (isScrollingDown && self.next) {
-        if (self.next.top - scrollTop <= 0) {
+      } else if (isScrollingDown) {
+        if (self.next && self.next.top - scrollTop <= 0) {
           // Sticky the next item if we've scrolled past its position.
           setCurrentItem(self.next);
         } else if (self.current) {
           // Push the current item up when we're almost at the next item.
-          if (self.next.top - scrollTop <= self.next.height) {
-            translate(self.current, self.next.top - self.next.height - scrollTop);
+          if (self.next && self.next.top - scrollTop <= self.next.height) {
+            translate(self.current, scrollTop + (self.next.top - self.next.height - scrollTop));
           } else {
-            translate(self.current, null);
+            translate(self.current, scrollTop);
           }
         }
         
       // Scrolling up with a current sticky item?
-      } else if (!isScrollingDown && self.current) {
-        if (scrollTop < self.current.top) {
+      } else if (!isScrollingDown) {
+        if (self.current && scrollTop < self.current.top) {
           // Sticky the previous item if we've scrolled up past
           // the original position of the currently stickied item.
           setCurrentItem(self.prev);
@@ -194,9 +196,9 @@ function MdSticky($document, $mdConstant, $compile, $$rAF, $mdUtil) {
         // the current item up from the top as it scrolls into view.
         if (self.current && self.next) {
           if (scrollTop >= self.next.top - self.current.height) {
-            translate(self.current, self.next.top - scrollTop - self.current.height);
+            translate(self.current, scrollTop + (self.next.top - scrollTop - self.current.height));
           } else {
-            translate(self.current, null);
+            translate(self.current, scrollTop);
           }
         }
       }
